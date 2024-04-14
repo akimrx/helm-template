@@ -1,0 +1,22 @@
+---
+{{- if .Values.service.enabled  -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "app-template.name" . }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "app-template.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: {{ .Values.service.portName }}
+      protocol: {{ .Values.service.protocol }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort}}
+  selector:
+    {{- include "app-template.selectorLabels" . | nindent 4 }}
+{{- end }}

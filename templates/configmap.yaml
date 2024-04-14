@@ -1,0 +1,15 @@
+---
+{{- if .Values.configMapFiles.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app-template.name" . }}-configmap-files
+  labels:
+    {{- include "app-template.labels" . | nindent 4 }}
+data:
+{{- $head := . }}
+{{- range .Values.configMapFiles.files }}
+  {{ . }}: |-
+{{ $head.Files.Get (printf "files/%s" . ) | indent 4 }}
+{{- end }}
+{{- end -}}

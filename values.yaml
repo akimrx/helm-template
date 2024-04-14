@@ -1,0 +1,297 @@
+## Default values for app-template.
+## -------------------------------
+
+## -- Pod replicas for your application
+replicaCount: 1
+
+
+## -- Container image parameters.
+## image.repository + image.tag = full docker image path
+## Always pullPolicy is most recommended https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+##
+image:
+  pullPolicy: Always
+  # Full path to image without tag
+  repository: <cr.yandex/images/REPLACE_ME>
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+
+## -- Credentials for image registry.
+## https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+##
+imagePullSecrets: []
+  # - name: regcred
+
+
+## -- Variables for redefining the application name in ArgoCD and other resources such as services.
+## The default behavior is created from the name field of the Chart.yaml file
+##
+nameOverride: ""
+fullnameOverride: ""
+
+
+## -- Deployment strategy for your application.
+##
+deployStrategy:
+  type: RollingUpdate  # Recreate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+
+## -- Parameters for the service that proxies requests to your application.
+## The recommended values are below, in most common cases you only need to change the targetPort.
+##
+service:
+  enabled: false
+  annotations: {}
+  type: ClusterIP # please do not use anything other than ClusterIP unless there is a solid reason to do so.
+  port: 80 # port for communicate inside cluster and for ingress
+  portName: http
+  protocol: TCP
+  targetPort: 8080 # your application port
+
+
+## -- Container probes.
+## https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+## -- A failed probe will result in restart a container
+livenessProbe: {}
+  # httpGet:
+  #   path: /ping
+  #   port: http
+  # initialDelaySeconds: 30
+
+## Removes traffic from a container (removes it from balancing)
+readinessProbe: {}
+  # httpGet:
+  #   path: /healthz
+  #   port: http
+  # initialDelaySeconds: 30
+
+## Prevent premature restarts of containers that require additional time for initialization
+startupProbe: {}
+  # httpGet:
+  #   path: /init_status
+  #   port: http
+  # failureThreshold: 30
+  # periodSeconds: 10
+
+
+## -- Ingress params, will not be applied if dnsName is not defined.
+##
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {} # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: "/"
+          pathType: Prefix # ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls # Secret or ExternalSecret name that contains TLS certificate for the same domain as host
+  #    hosts:
+  #      - chart-example.local
+
+
+## -- Pod disruption budget settings.
+## https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets
+##
+# podDisruptionBudget:
+#   maxUnavailable: 1
+
+
+## -- Resource quota per Pod.
+## Please specify adequate values that are really necessary for the application to work.
+## Don't forget that your application is not the only one in the cluster.
+##
+## resources.requests - Resources reserved by the application
+## resources.limits - The maximum of available resources for Pod with application
+##
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+
+## -- Annotations.
+## https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+deploymentAnnotations: {}
+
+
+## https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+##
+## -- Pod only labels
+podLabels: {}
+## -- Labels that will be inserted into all labels directives
+commonLabels: {}
+
+
+## -- Node selectors.
+## https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
+nodeSelector: {}
+
+
+## -- Node tolerations.
+## https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+tolerations: []
+
+
+## -- Container properties.
+## https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/
+containerProps:
+  command: []
+  args: []
+  lifecycle: {} # https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/
+
+
+## -- Affinity params.
+## It is not recommended to change these parameters if you are not sure of your actions
+##
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: # hard rule
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: nodeType
+              operator: In
+              values:
+                - worker
+
+
+## -- Service account configuration.
+## https://kubernetes.io/docs/concepts/security/service-accounts/
+##
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Automatically mount a ServiceAccount's API credentials for communicate with control plane
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+
+## -- Security settings.
+##
+## The principle of minimum privileges is used by default.
+## In most cases, nothing needs to be changed, and moreover, it is not recommended
+##
+##
+## Container Security Settings
+## It will be applied to all containers inside Pod
+##
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: "65532"
+  runAsGroup: "65532"
+  privileged: false
+  allowPrivilegeEscalation: false
+
+
+## -- Horizontal Pod autoscaling.
+## https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+##
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+
+## -- Environment variables
+##
+env: {}
+  # KEY: value
+
+
+## -- Secrets (include ExternalSecrets) to be injected into container environment
+##
+secretsToEnv: {}
+  # ENV_VAR_NAME:
+  #   refName: my-secret-name
+  #   refKey: my-secret-key
+
+
+## External secrets from ESO.
+## https://external-secrets.io/latest/
+##
+## Example for yandex-cloud-lockbox: https://yandex.cloud/ru/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets#create-es
+## Secret will be available as `<chart-name>-secret`
+##
+externalSecrets:
+  enabled: false
+  refreshInterval: "1h"
+  storeName: yc-lockbox-secret-store
+  annotations: {}
+  # data:
+  #   - secretKey: username
+  #     remoteRef:
+  #       secretId: e6qqxxxxxxxxxhd1
+  #       secretKey: username
+  #   - secretKey: password
+  #     remoteRef:
+  #       secretId: e6qqxxxxxxxxxhd2
+  #       secretKey: password
+
+
+## -- Mounting configuration files to a container via ConfigMap.
+##
+## 1. Enable directive: configMapFile.enabled = true
+## 2. Create the file(s) in the 'files' directory and add them to the `configMapFiles.files = [my_json_file.json, my_text_file.txt]`
+## 3. Specify the path to mount: `configMapFiles.mountPath = /path/in_the_container`
+##
+## When adding the configMapFiles section, the container is restarted,
+## further edits and additions of new files are pulled up without restarting with a slight delay (a few minutes after updating ConfigMap)
+##
+## Example:
+## -------
+## We need to place a some files in the container at the path /mount_path/in_the_container.
+## Creating a files in the `files` directory, i.e.:
+##
+## my-helm-chart/
+##   Chart.yaml
+##   templates/
+##     ...
+##   files/
+##     my_json_file.json
+##     my_text_file.txt
+##
+## Define files in values.<env>.yaml like example below:
+##
+## configMapFiles:
+##   enabled: true
+configMapFiles:
+  enabled: false
+  # mountPath: /mount_path/in_the_container
+  # files:
+  #   - my_json_file.json
+  #   - my_text_file.txt
+
+
+## -- Additional volumes on the output Deployment definition.
+##
+volumes: []
+# - name: my-app-config-map-files
+#   configMap:
+#     name: config-map-files
+
+
+## -- Additional volumeMounts on the output Deployment definition.
+##
+volumeMounts: []
+# - name: config-map-files
+#   mountPath: /path/to/container_dir
+#   readonly: true

@@ -1,0 +1,13 @@
+---
+{{ if .Values.podDisruptionBudget }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "app-template.name" . }}
+  labels: {{ include "app-template.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "app-template.selectorLabels" . | nindent 6 }}
+{{ toYaml .Values.podDisruptionBudget | indent 2 }}
+{{- end }}

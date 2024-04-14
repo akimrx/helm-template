@@ -1,0 +1,66 @@
+# Override values for PRODUCTION environment
+#
+# PLEASE EDIT THIS FILE
+# The most common parameters are defined below, however, you can override any available values
+---
+replicaCount: 2
+
+resources:
+  requests:
+    cpu: 700m
+  limits:
+    cpu: 900m
+    memory: 512Mi
+
+service:
+  enabled: true
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  host: my-chart.local
+  tls: []
+    # # Secret or ExternalSecret name that contains TLS certificate for the same domain as host
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - my-chart.local
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+
+env:
+  FOO: BAR
+
+externalSecrets: # secret will be available as `<chart-name>-secret`
+  enabled: true
+  data:
+    - secretKey: username
+      remoteRef:
+        secretId: e6qqxxxxxxxxxhd1
+        secretKey: username
+    - secretKey: password
+      remoteRef:
+        secretId: e6qqxxxxxxxxxhd2
+        secretKey: password
+
+secretsToEnv:
+  USERNAME:
+    refName: my-app-secret
+    refKey: username
+  PASSWORD:
+    refName: my-app-secret
+    refKey: password
+
+configMapFiles:
+  enabled: true
+  mountPath: /mount_path/in_the_container
+  # Create directory files/ and touch files
+  files:
+    - my_json_file.json
+    - my_text_file.txt
+
+podDisruptionBudget:
+  maxUnavailable: 1
