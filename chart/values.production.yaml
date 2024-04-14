@@ -37,19 +37,19 @@ env:
 externalSecrets: # secret will be available as `<chart-name>-secret`
   enabled: true
   data:
-    - secretKey: username
+    - secretName: username
       remoteRef:
         secretId: e6qqxxxxxxxxxhd1
         secretKey: username
-    - secretKey: password
+    - secretName: password
       remoteRef:
         secretId: e6qqxxxxxxxxxhd2
         secretKey: password
 
 secretsToEnv:
   USERNAME:
-    refName: my-app-secret
-    refKey: username
+    refName: my-app-secret  # i.e. `<chart-name>-secret`
+    refKey: username  # using externalSecrets.data[].secretName
   PASSWORD:
     refName: my-app-secret
     refKey: password
