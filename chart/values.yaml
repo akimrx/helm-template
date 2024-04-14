@@ -153,15 +153,15 @@ containerProps:
 ## -- Affinity params.
 ## It is not recommended to change these parameters if you are not sure of your actions
 ##
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: # hard rule
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: nodeType
-              operator: In
-              values:
-                - worker
+affinity: {}
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution: # hard rule
+  #     nodeSelectorTerms:
+  #       - matchExpressions:
+  #           - key: node-type
+  #             operator: In
+  #             values:
+  #               - worker
 
 
 ## -- Service account configuration.
