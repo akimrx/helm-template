@@ -2,7 +2,17 @@
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
-A template Helm chart for Kubernetes
+A template Helm chart for Kubernetes.
+
+1. Copy all files from this `chart` directory to `your-app-repo/helm/myapp-name`
+1. Edit name, description and versions in the `Chart.yaml` file.
+2. Replace `image.repository` in the `values.yaml` file.
+3. Edit `values.<env>.yaml` as you need.
+
+See detailed reference in the `values.yaml`.
+
+* For using `configMapFiles` create files directory like `chart/files`.
+* ExternalSecrets have been tested using the [External Secret Operator](https://external-secrets.io/latest/) in combination with [Yandex Lockbox](https://yandex.cloud/com/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets#create-es)
 
 ## Values
 
