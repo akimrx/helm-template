@@ -239,11 +239,11 @@ externalSecrets:
   decodingStrategy: None
   annotations: {}
   # data:
-  #   - secretName: username
+  #   - secretKey: username
   #     remoteRef:
   #       secretId: e6qqxxxxxxxxxhd1
   #       secretKey: username
-  #   - secretName: password
+  #   - secretKey: password
   #     remoteRef:
   #       secretId: e6qqxxxxxxxxxhd2
   #       secretKey: password
