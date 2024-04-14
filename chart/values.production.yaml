@@ -48,8 +48,8 @@ externalSecrets: # secret will be available as `<chart-name>-secret`
 
 secretsToEnv:
   USERNAME:
-    refName: my-app-secret
-    refKey: username
+    refName: my-app-secret  # i.e. `<chart-name>-secret`
+    refKey: username  # using externalSecrets.data[].secretKey
   PASSWORD:
     refName: my-app-secret
     refKey: password
