@@ -25,7 +25,7 @@ Example for Yandex Lockbox ([see more info here](https://yandex.cloud/ru/docs/ma
 helm repo add external-secrets https://charts.external-secrets.io
 helm install external-secrets external-secrets/external-secrets -n default
 
-# Create yc-auth secret with service account json key before this command
+# Create yc-auth secret with service account json key before command below
 # https://yandex.cloud/ru/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets
 
 kubectl --namespace default apply -f - <<< '
