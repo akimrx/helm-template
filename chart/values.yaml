@@ -235,6 +235,7 @@ externalSecrets:
   enabled: false
   refreshInterval: "1h"
   storeName: yc-lockbox-secret-store
+  decodingStrategy: None
   annotations: {}
   # data:
   #   - secretKey: username

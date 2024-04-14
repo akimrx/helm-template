@@ -66,6 +66,7 @@ spec:
 | deploymentAnnotations | object | `{}` |  |
 | env | object | `{}` |  |
 | externalSecrets.annotations | object | `{}` |  |
+| externalSecrets.decodingStrategy | string | `"None"` |  |
 | externalSecrets.enabled | bool | `false` |  |
 | externalSecrets.refreshInterval | string | `"1h"` |  |
 | externalSecrets.storeName | string | `"yc-lockbox-secret-store"` |  |
@@ -97,9 +98,9 @@ spec:
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.privileged | bool | `false` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
-| securityContext.runAsGroup | string | `"65532"` |  |
+| securityContext.runAsGroup | int | `65532` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.runAsUser | string | `"65532"` |  |
+| securityContext.runAsUser | int | `65532` |  |
 | service.annotations | object | `{}` |  |
 | service.enabled | bool | `false` |  |
 | service.port | int | `80` |  |
@@ -115,4 +116,3 @@ spec:
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` |  |
 | volumes | list | `[]` |  |
-
