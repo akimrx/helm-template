@@ -17,7 +17,7 @@ See detailed reference in the `values.yaml`.
 
 ---
 
-If you need `ExternalSecret` create SecretStore first.
+If you need `ExternalSecret` create `SecretStore` first. For namespaceless secrets use `ClusterSecretStore` kind.
 Example for Yandex Lockbox ([see more info here](https://yandex.cloud/ru/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets)):
 
 ```shell
