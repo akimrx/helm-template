@@ -13,7 +13,36 @@ A template Helm chart for Kubernetes.
 See detailed reference in the `values.yaml`.
 
 * For using `configMapFiles` create files directory like `chart/files`.
-* ExternalSecrets have been tested using the [External Secret Operator](https://external-secrets.io/latest/) in combination with [Yandex Lockbox](https://yandex.cloud/com/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets#create-es)
+* `ExternalSecret` have been tested using the [External Secret Operator](https://external-secrets.io/latest/) in combination with [Yandex Lockbox](https://yandex.cloud/com/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets)
+
+---
+
+If you need `ExternalSecret` create SecretStore first.
+Example for Yandex Lockbox ([see more info here](https://yandex.cloud/ru/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets)):
+
+```shell
+# https://external-secrets.io/latest/introduction/getting-started/
+helm repo add external-secrets https://charts.external-secrets.io
+helm install external-secrets external-secrets/external-secrets -n default
+
+# Create yc-auth secret with service account json key before this command
+# https://yandex.cloud/ru/docs/managed-kubernetes/tutorials/kubernetes-lockbox-secrets
+
+kubectl --namespace default apply -f - <<< '
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: yc-lockbox-secret-store
+spec:
+  provider:
+    yandexlockbox:
+      auth:
+        authorizedKeySecretRef:
+          name: yc-auth
+          key: authorized-key'
+```
+
+---
 
 ## Values
 
