@@ -5,9 +5,10 @@
 A template Helm chart for Kubernetes.
 
 1. Copy all files from this `chart` directory to `your-app-repo/helm/myapp-name`
-1. Edit name, description and versions in the `Chart.yaml` file.
-2. Replace `image.repository` in the `values.yaml` file.
-3. Edit `values.<env>.yaml` as you need.
+2. Edit name, description and versions in the `Chart.yaml` file.
+3. Replace `image.repository` in the `values.yaml` file.
+4. Edit `values.<env>.yaml` as you need.
+5. Checkout generated manifests via command: `helm template myapp your-app-repo/helm/myapp-name -f your-app-repo/helm/myapp-name/values.production.yaml`
 
 See detailed reference in the `values.yaml`.
 
