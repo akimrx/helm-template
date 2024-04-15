@@ -171,7 +171,7 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: false
   # Automatically mount a ServiceAccount's API credentials for communicate with control plane
-  automount: true
+  automountToken: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -236,13 +236,14 @@ externalSecrets:
   refreshInterval: "1h"
   storeName: yc-lockbox-secret-store
   storeKind: ClusterSecretStore # SecretStore
-  decodingStrategy: None
+  defaultDecodingStrategy: None
   annotations: {}
   # data:
   #   - secretKey: username
   #     remoteRef:
   #       secretId: e6qqxxxxxxxxxhd1
   #       secretKey: username
+  #       decodingStrategy: Auto
   #   - secretKey: password
   #     remoteRef:
   #       secretId: e6qqxxxxxxxxxhd2

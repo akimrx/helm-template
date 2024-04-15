@@ -19,6 +19,12 @@ service:
 ingress:
   enabled: true
   host: my-chart.local
+  # annotations:
+  #   nginx.ingress.kubernetes.io/enable-cors: "true"
+  #   nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PATCH, DELETE"
+  #   nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+  #   nginx.ingress.kubernetes.io/cors-allow-headers: "*"
+  #   nginx.ingress.kubernetes.io/cors-allow-origin: "*"
   tls: []
     # # Secret or ExternalSecret name that contains TLS certificate for the same domain as host
     # - secretName: chart-example-tls
@@ -44,6 +50,7 @@ externalSecrets: # secret will be available as `<chart-name>-secret`
     - secretKey: password
       remoteRef:
         secretId: e6qqxxxxxxxxxhd2
+        decodingStrategy: Auto
         secretKey: password
 
 secretsToEnv:

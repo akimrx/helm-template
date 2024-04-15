@@ -41,6 +41,7 @@ spec:
       {{- if $.Values.serviceAccount.create }}
       serviceAccountName: {{ include "app-template.serviceAccountName" . }}
       {{- end }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
