@@ -44,7 +44,7 @@ spec:
       automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
       revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 5 }}
-      {{- with Values.initContainers }}
+      {{- with .Values.initContainers }}
       initContainers:
         {{- toYaml . | indent 8 }}
       {{- end }}
