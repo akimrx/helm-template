@@ -298,3 +298,9 @@ volumeMounts: []
 # - name: config-map-files
 #   mountPath: /path/to/container_dir
 #   readonly: true
+
+# initContainers: {}
+
+# revisionHistoryLimit: 5
+
+# terminationGracePeriodSeconds: 30

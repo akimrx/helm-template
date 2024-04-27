@@ -42,6 +42,12 @@ spec:
       serviceAccountName: {{ include "app-template.serviceAccountName" . }}
       {{- end }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
+      revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 5 }}
+      {{- with Values.initContainers }}
+      initContainers:
+        {{- toYaml . | indent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
